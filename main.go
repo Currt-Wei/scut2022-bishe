@@ -1,13 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"scut2022-bishe/app/router"
+	_ "scut2022-bishe/app/router"
+)
 
 func main() {
-	r := gin.Default()
-	r.GET("/index", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run()
+	router.InitRouter()
 }
