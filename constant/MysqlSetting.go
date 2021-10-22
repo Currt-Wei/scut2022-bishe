@@ -1,8 +1,8 @@
 package constant
 
 import (
-	"fmt"
 	"gopkg.in/ini.v1"
+	"scut2022-bishe/app/middleware"
 )
 
 type Mysql struct {
@@ -18,11 +18,11 @@ var MysqlSetting = &Mysql{}
 func InitMysqlSetting() {
 	cfg, err := ini.Load("config/app.ini")
 	if err != nil {
-		fmt.Println("读取配置错误")
+		middleware.Logger().Errorf("[mysql]配置文件加载错误, %s", err)
 	}
 
 	err = cfg.Section("mysql").MapTo(MysqlSetting)
 	if err != nil {
-		fmt.Println("ini文件映射错误")
+		middleware.Logger().Errorf("[mysql]配置文件映射错误, %s", err)
 	}
 }

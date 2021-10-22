@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"scut2022-bishe/app/middleware"
 	"scut2022-bishe/app/model"
 	"scut2022-bishe/util"
 )
@@ -16,6 +17,9 @@ func Register(c *gin.Context) {
 		StuPassword: "root",
 	}
 
-	util.GetDB().Create(&u)
+	result := util.GetDB().Create(&u)
 
+	if result.Error != nil {
+		middleware.Logger().Errorf("注册失败, %s", result.Error)
+	}
 }

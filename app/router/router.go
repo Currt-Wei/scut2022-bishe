@@ -2,18 +2,16 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"scut2022-bishe/app/controller"
-	"scut2022-bishe/util"
+	"scut2022-bishe/app/middleware"
 )
 
 func InitRouter() {
-	r := gin.Default()
-	r.GET("/index", func(c *gin.Context) {
-		util.Logger().WithFields(logrus.Fields{
-			"name":"wjh",
-		}).Infof("测试日志使用","Info")
+	r := gin.New()
+	// 使用自定义的日志中间件
+	r.Use(middleware.LoggerToFile())
 
+	r.GET("/index", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
@@ -21,5 +19,9 @@ func InitRouter() {
 
 	r.GET("/register", controller.Register)
 
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		middleware.Logger().Errorf("路由初始化失败, %s", err)
+		return
+	}
 }
