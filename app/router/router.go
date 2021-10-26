@@ -10,6 +10,8 @@ func InitRouter() {
 	r := gin.New()
 	// 使用自定义的日志中间件
 	r.Use(middleware.LoggerToFile())
+	// 使用自定义的jwt认证
+	//r.Use(middleware.JWTAuth())
 
 	r.GET("/index", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -18,6 +20,15 @@ func InitRouter() {
 	})
 
 	r.GET("/register", controller.Register)
+	r.POST("/login", controller.Login)
+
+	g1:=r.Group("/test")
+	g1.Use(middleware.JWTAuth())
+	{
+		g1.GET("/testtoken", controller.TestToken)
+	}
+
+
 
 	err := r.Run()
 	if err != nil {
