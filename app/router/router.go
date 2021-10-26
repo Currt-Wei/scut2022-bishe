@@ -10,6 +10,8 @@ func InitRouter() {
 	r := gin.New()
 	// 使用自定义的日志中间件
 	r.Use(middleware.LoggerToFile())
+	//默认跨域
+	r.Use(middleware.Cors())
 	// 使用自定义的jwt认证
 	//r.Use(middleware.JWTAuth())
 
