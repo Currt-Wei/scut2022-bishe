@@ -93,11 +93,11 @@ func Login(c *gin.Context){
 
 	generateToken(c,user)
 
-	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
-		"msg":    "登陆成功",
-		"data":   nil,
-	})
+	//c.JSON(http.StatusOK, gin.H{
+	//	"status": 0,
+	//	"msg":    "登陆成功",
+	//	"data":   nil,
+	//})
 	return
 }
 
