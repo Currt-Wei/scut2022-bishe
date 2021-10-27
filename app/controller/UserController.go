@@ -27,7 +27,14 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	service.AddUser(&user)
+	err:=service.AddUser(&user)
+	if err!=nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": -1,
+			"msg":    err.Error(),
+			"data":   nil,
+		})
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": 0,
