@@ -21,13 +21,13 @@ func InitRouter() {
 		})
 	})
 
-	r.GET("/register", controller.Register)
+	r.POST("/register", controller.Register)
 	r.POST("/login", controller.Login)
 
 	g1:=r.Group("/test")
 	g1.Use(middleware.JWTAuth())
 	{
-		g1.GET("/testtoken", controller.TestToken)
+		g1.POST("/testtoken", controller.TestToken)
 	}
 
 
