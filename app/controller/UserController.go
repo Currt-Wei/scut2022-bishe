@@ -28,6 +28,13 @@ func Register(c *gin.Context) {
 	}
 
 	service.AddUser(&user)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": 0,
+		"msg":    "注册成功",
+		"data":   nil,
+	})
+	return
 }
 
 // 定义一个普通controller函数，作为一个验证接口逻辑
@@ -79,6 +86,11 @@ func Login(c *gin.Context){
 
 	generateToken(c,user)
 
+	c.JSON(http.StatusOK, gin.H{
+		"status": 0,
+		"msg":    "登陆成功",
+		"data":   nil,
+	})
 	return
 }
 
