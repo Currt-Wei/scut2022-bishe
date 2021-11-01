@@ -3,6 +3,7 @@ module scut2022-bishe
 go 1.16
 
 require (
+	github.com/casbin/casbin/v2 v2.38.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0 // indirect

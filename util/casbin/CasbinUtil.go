@@ -1,9 +1,10 @@
-package middleware
+package casbin
 
 import (
 	"fmt"
 	"github.com/casbin/casbin/v2"
 	"runtime"
+	"scut2022-bishe/app/middleware"
 	"scut2022-bishe/app/service/policy"
 )
 
@@ -15,21 +16,21 @@ type CasbinObject struct {
 	Enforcer *casbin.Enforcer
 }
 
-var CasbinObj *CasbinObject
+var CasbinObj CasbinObject
 
 // Init 初始化CasbinObj这个变量
-func Init() {
+func init() {
 	osType := runtime.GOOS // 运行时操作系统
 	var path string        // 配置文件的位置
 	if osType == "windows" {
-		path = "..\\config\\rbac_models.conf"
+		path = "config\\rbac_models.conf"
 	} else if osType == "linux" || osType == "darwin" {
-		path = "../config/rbac_models.conf"
+		path = "config/rbac_models.conf"
 	}
 
 	enforcer, err := casbin.NewEnforcer(path)
 	if err != nil {
-		Logger().Errorf("[policy]加载casbin策略出错，%s", err)
+		middleware.Logger().Errorf("[policy]加载casbin策略出错，%s", err)
 		return
 	}
 
@@ -39,7 +40,7 @@ func Init() {
 	permissionApi := policy.Permission{Enforcer: enforcer}
 
 	// 初始化这个变量为同一个
-	CasbinObj = &CasbinObject{
+	CasbinObj = CasbinObject{
 		UserAPI:       userApi,
 		RoleAPI:       roleApi,
 		PermissionAPI: permissionApi,
@@ -53,7 +54,7 @@ func Init() {
 func InitCasbinPolicyData() {
 	// 加载所有的角色-权限关系
 	CasbinObj.RoleAPI.LoadAllPolicy()
-	CheckAllPolicy()
+	// CheckAllPolicy()
 }
 
 func CheckAllPolicy() {
