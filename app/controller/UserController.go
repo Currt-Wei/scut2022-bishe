@@ -7,6 +7,7 @@ import (
 	"scut2022-bishe/app/middleware"
 	"scut2022-bishe/app/model"
 	"scut2022-bishe/app/service"
+	"scut2022-bishe/constant"
 	"time"
 )
 
@@ -20,7 +21,7 @@ func Register(c *gin.Context) {
 
 	if err:=c.ShouldBind(&user);err!=nil{
 		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
+			"status": constant.RegisterFail,
 			"msg":    err.Error(),
 			"data":   nil,
 		})
@@ -30,14 +31,14 @@ func Register(c *gin.Context) {
 	err:=service.AddUser(&user)
 	if err!=nil {
 		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
+			"status": constant.RegisterFail,
 			"msg":    err.Error(),
 			"data":   nil,
 		})
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
+		"status": constant.RegisterSuccess,
 		"msg":    "注册成功",
 		"data":   nil,
 	})
@@ -73,7 +74,7 @@ func Login(c *gin.Context){
 
 	if err:=c.ShouldBind(&user);err!=nil{
 		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
+			"status": constant.LoginFail,
 			"msg":    err.Error(),
 			"data":   nil,
 		})
@@ -84,7 +85,7 @@ func Login(c *gin.Context){
 	err := service.FindUserByEmail(&user)
 	if err!=nil {
 		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
+			"status": constant.LoginFail,
 			"msg":    err.Error(),
 			"data":   nil,
 		})
@@ -122,7 +123,7 @@ func generateToken(c *gin.Context, user model.User) {
 	token, err := j.CreateToken(claims)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
+			"status": constant.LoginFail,
 			"msg":    err.Error(),
 			"data":   nil,
 		})
@@ -136,7 +137,7 @@ func generateToken(c *gin.Context, user model.User) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
+		"status": constant.LoginSuccess,
 		"msg":    "登陆成功",
 		"data":   data,
 	})
