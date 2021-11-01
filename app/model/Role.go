@@ -9,7 +9,6 @@ type Role struct {
 	RoleName string `json:"role_name"`
 
 	Permission []Permission `gorm:"many2many:role_permission;"`
-	Test       []Student    `gorm:"many2many:user_role"`
 }
 
 func (r Role) TableName() string {
@@ -30,7 +29,7 @@ func GetRoleById(id int) (*Role, error) {
 // GetAllRoles 加载所有的角色
 func GetAllRoles() ([]Role, error) {
 	roles := make([]Role, 10)
-	err := DB.Preload("Test").Find(&roles).Error
+	err := DB.Preload("Permission").Find(&roles).Error
 	if err != nil {
 		middleware.Logger().Errorf("[policy]查询所有角色失败，%s", err)
 		return nil, err

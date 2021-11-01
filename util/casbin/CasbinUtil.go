@@ -54,7 +54,9 @@ func init() {
 func InitCasbinPolicyData() {
 	// 加载所有的角色-权限关系
 	CasbinObj.RoleAPI.LoadAllPolicy()
-	// CheckAllPolicy()
+	// 加载所有的用户-角色关系
+	CasbinObj.UserAPI.LoadAllPolicy()
+	CheckAllPolicy()
 }
 
 func CheckAllPolicy() {
@@ -63,5 +65,8 @@ func CheckAllPolicy() {
 		for _, v := range vlist {
 			fmt.Printf("value: %s, ", v)
 		}
+		fmt.Println()
 	}
+	ok, _ := CasbinObj.Enforcer.Enforce("zhangsan@qq.com", "/api/v1/setting/permission", "GET")
+	fmt.Println(ok)
 }

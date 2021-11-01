@@ -9,7 +9,7 @@ import (
 func AddUser(user *model.User) (err error) {
 
 	var user1 *model.User
-	user1 = model.FindUserByEmail()
+	user1 = model.GetUserByEmail()
 	if user1.Email != "" {
 		middleware.Logger().Error("注册失败, 邮箱已注册")
 		return fmt.Errorf("注册失败, 邮箱已注册")
@@ -27,7 +27,7 @@ func AddUser(user *model.User) (err error) {
 func FindUserByEmail(user *model.User) error {
 
 	var user1 *model.User
-	user1 = model.FindUserByEmail()
+	user1 = model.GetUserByEmail()
 	if user1.Email == "" {
 		middleware.Logger().Error("登陆失败, 用户邮箱未注册")
 		return fmt.Errorf("登陆失败, 用户邮箱未注册")
