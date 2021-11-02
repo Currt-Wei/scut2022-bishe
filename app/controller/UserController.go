@@ -5,21 +5,22 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 	"scut2022-bishe/app/model"
 	"scut2022-bishe/app/service"
 	"scut2022-bishe/constant"
 	"time"
 )
 
-type LoginResult struct{
-	Name string
+type LoginResult struct {
+	Name  string
 	Token string
 }
 
 func Register(c *gin.Context) {
 	var user model.User
 
-	if err:=c.ShouldBind(&user);err!=nil{
+	if err := c.ShouldBind(&user); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": constant.RegisterFail,
 			"msg":    err.Error(),
@@ -28,8 +29,8 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	err:=service.AddUser(&user)
-	if err!=nil {
+	err := service.AddUser(&user)
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": constant.RegisterFail,
 			"msg":    err.Error(),
@@ -69,10 +70,10 @@ func TestToken(c *gin.Context) {
 }
 
 // 登陆
-func Login(c *gin.Context){
+func Login(c *gin.Context) {
 	var user model.User
 
-	if err:=c.ShouldBind(&user);err!=nil{
+	if err := c.ShouldBind(&user); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": constant.LoginFail,
 			"msg":    err.Error(),
@@ -83,7 +84,7 @@ func Login(c *gin.Context){
 
 	//TODO 查找数据库
 	err := service.FindUserByEmail(&user)
-	if err!=nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": constant.LoginFail,
 			"msg":    err.Error(),
@@ -92,7 +93,7 @@ func Login(c *gin.Context){
 		return
 	}
 
-	generateToken(c,user)
+	generateToken(c, user)
 
 	//c.JSON(http.StatusOK, gin.H{
 	//	"status": 0,
@@ -115,7 +116,7 @@ func generateToken(c *gin.Context, user model.User) {
 			// 签名生效时间
 			ExpiresAt: int64(time.Now().Unix() + 3600),
 			// 签名过期时间
-			Issuer:    "bgbiao.top",
+			Issuer: "bgbiao.top",
 			// 签名颁发者
 		},
 	}
@@ -129,7 +130,7 @@ func generateToken(c *gin.Context, user model.User) {
 		})
 	}
 
-	middleware.Logger().Println(token)
+	log.Logger().Println(token)
 	// 封装一个响应数据,返回用户名和token
 	data := LoginResult{
 		Name:  user.Name,
@@ -143,4 +144,3 @@ func generateToken(c *gin.Context, user model.User) {
 	})
 	return
 }
-

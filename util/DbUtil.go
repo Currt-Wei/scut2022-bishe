@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 	"scut2022-bishe/constant"
 	"time"
 )
@@ -23,7 +23,7 @@ func InitMysql() {
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		middleware.Logger().Errorf("[mysql]连接数据库失败, %s", err)
+		log.Logger().Errorf("[mysql]连接数据库失败, %s", err)
 		panic("failed to connect database")
 	}
 

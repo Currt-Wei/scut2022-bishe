@@ -4,16 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"scut2022-bishe/app/controller"
 	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 )
 
 func InitRouter() {
 	r := gin.New()
 	// 使用自定义的日志中间件
-	r.Use(middleware.LoggerToFile())
-	//默认跨域
+	r.Use(log.LoggerToFile())
+	// 默认跨域
 	r.Use(middleware.Cors())
-	// 使用自定义的jwt认证
-	//r.Use(middleware.JWTAuth())
 
 	r.GET("/index", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -24,17 +23,20 @@ func InitRouter() {
 	r.POST("/register", controller.Register)
 	r.POST("/login", controller.Login)
 
-	g1:=r.Group("/test")
+	// 使用自定义的jwt认证
+	r.Use(middleware.JWTAuth())
+	// 权限验证
+	r.Use(middleware.Authorize())
+
+	g1 := r.Group("/test")
 	g1.Use(middleware.JWTAuth())
 	{
 		g1.POST("/testtoken", controller.TestToken)
 	}
 
-
-
 	err := r.Run()
 	if err != nil {
-		middleware.Logger().Errorf("路由初始化失败, %s", err)
+		log.Logger().Errorf("路由初始化失败, %s", err)
 		return
 	}
 }

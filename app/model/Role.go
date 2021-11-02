@@ -1,7 +1,7 @@
 package model
 
 import (
-	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 )
 
 type Role struct {
@@ -20,7 +20,7 @@ func GetRoleById(id int) (*Role, error) {
 	var role Role
 	err := DB.Preload("Permission").Find(&role, id).Error
 	if err != nil {
-		middleware.Logger().Errorf("[policy]根据role_id查找角色失败，%s", err)
+		log.Logger().Errorf("[policy]根据role_id查找角色失败，%s", err)
 		return nil, err
 	}
 	return &role, nil
@@ -31,7 +31,7 @@ func GetAllRoles() ([]Role, error) {
 	roles := make([]Role, 10)
 	err := DB.Preload("Permission").Find(&roles).Error
 	if err != nil {
-		middleware.Logger().Errorf("[policy]查询所有角色失败，%s", err)
+		log.Logger().Errorf("[policy]查询所有角色失败，%s", err)
 		return nil, err
 	}
 	return roles, nil

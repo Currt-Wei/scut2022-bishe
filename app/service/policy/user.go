@@ -2,7 +2,7 @@ package policy
 
 import (
 	"github.com/casbin/casbin/v2"
-	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 	"scut2022-bishe/app/model"
 )
 
@@ -46,7 +46,7 @@ func (u *User) LoadPolicy(id int) {
 	for _, role := range user.Role {
 		_, err := u.Enforcer.AddRoleForUser(user.Email, role.RoleName)
 		if err != nil {
-			middleware.Logger().Errorf("[policy]给用户添加角色失败，%s", err)
+			log.Logger().Errorf("[policy]给用户添加角色失败，%s", err)
 			return
 		}
 	}

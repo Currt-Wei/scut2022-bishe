@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"scut2022-bishe/app/middleware/log"
 )
 
 // 定义一个jwt对象
@@ -22,7 +23,7 @@ func NewJWT() *JWT {
 
 // 自定义有效载荷(这里采用自定义的Name和Email作为有效载荷的一部分)
 type CustomClaims struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 	// StandardClaims结构体实现了Claims接口(Valid()函数)
 	jwt.StandardClaims
@@ -74,8 +75,6 @@ func (j *JWT) ParserToken(tokenString string) (*CustomClaims, error) {
 	return nil, fmt.Errorf("token无效")
 }
 
-
-
 // 定义一个JWTAuth的中间件
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -92,7 +91,7 @@ func JWTAuth() gin.HandlerFunc {
 		}
 
 		// 打印日志
-		Logger().Print("get token: ", token)
+		log.Logger().Print("get token: ", token)
 
 		// 初始化一个JWT对象实例，并根据结构体方法来解析token
 		j := NewJWT()
@@ -122,4 +121,3 @@ func JWTAuth() gin.HandlerFunc {
 		c.Set("claims", claims)
 	}
 }
-

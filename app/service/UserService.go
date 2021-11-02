@@ -2,22 +2,22 @@ package service
 
 import (
 	"fmt"
-	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 	"scut2022-bishe/app/model"
 )
 
 func AddUser(user *model.User) (err error) {
 
 	var user1 *model.User
-	user1 = model.GetUserByEmail()
-	if user1.Email != "" {
-		middleware.Logger().Error("注册失败, 邮箱已注册")
+	user1 = model.GetUserByEmail(user.Email)
+	if user1 != nil {
+		log.Logger().Error("注册失败, 邮箱已注册")
 		return fmt.Errorf("注册失败, 邮箱已注册")
 	}
 
-	err = AddUser(user1)
+	err = model.AddUser(*user)
 	if err != nil {
-		middleware.Logger().Errorf("注册失败, %s", err)
+		log.Logger().Errorf("注册失败, %s", err)
 		return fmt.Errorf("注册失败, 无法新建用户: %s", err)
 	}
 
@@ -27,14 +27,14 @@ func AddUser(user *model.User) (err error) {
 func FindUserByEmail(user *model.User) error {
 
 	var user1 *model.User
-	user1 = model.GetUserByEmail()
+	user1 = model.GetUserByEmail(user.Email)
 	if user1.Email == "" {
-		middleware.Logger().Error("登陆失败, 用户邮箱未注册")
+		log.Logger().Error("登陆失败, 用户邮箱未注册")
 		return fmt.Errorf("登陆失败, 用户邮箱未注册")
 	}
 
 	if user.Password != user1.Password {
-		middleware.Logger().Error("登陆失败, 密码错误")
+		log.Logger().Error("登陆失败, 密码错误")
 		return fmt.Errorf("登陆失败, 密码错误")
 	}
 

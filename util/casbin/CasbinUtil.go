@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/casbin/casbin/v2"
 	"runtime"
-	"scut2022-bishe/app/middleware"
+	"scut2022-bishe/app/middleware/log"
 	"scut2022-bishe/app/service/policy"
 )
 
@@ -30,7 +30,7 @@ func init() {
 
 	enforcer, err := casbin.NewEnforcer(path)
 	if err != nil {
-		middleware.Logger().Errorf("[policy]加载casbin策略出错，%s", err)
+		log.Logger().Errorf("[policy]加载casbin策略出错，%s", err)
 		return
 	}
 
