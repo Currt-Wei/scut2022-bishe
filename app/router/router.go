@@ -28,6 +28,12 @@ func InitRouter() {
 	// 权限验证
 	r.Use(middleware.Authorize())
 
+	apiV1 := r.Group("/api/v1")
+	{
+		// 比赛模块
+		apiV1.POST("/setting/competition", controller.CreateCompetition) // 创建比赛
+	}
+
 	g1 := r.Group("/test")
 	g1.Use(middleware.JWTAuth())
 	{

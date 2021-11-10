@@ -68,5 +68,9 @@ func CheckAllPolicy() {
 		fmt.Println()
 	}
 	ok, _ := CasbinObj.Enforcer.Enforce("zhangsan@qq.com", "/api/v1/setting/permission", "GET")
+	ok1, _ := CasbinObj.Enforcer.Enforce("zhangsan@qq.com", "/api/v1/setting/competition", "GET")
+	ok2, _ := CasbinObj.Enforcer.Enforce("lisi@qq.com", "/api/v1/setting/competition", "GET")
 	fmt.Println(ok)
+	fmt.Println(ok1)
+	fmt.Println(ok2)
 }
