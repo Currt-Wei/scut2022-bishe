@@ -1,7 +1,6 @@
 package casbin
 
 import (
-	"fmt"
 	"github.com/casbin/casbin/v2"
 	"runtime"
 	"scut2022-bishe/app/middleware/log"
@@ -56,21 +55,4 @@ func InitCasbinPolicyData() {
 	CasbinObj.RoleAPI.LoadAllPolicy()
 	// 加载所有的用户-角色关系
 	CasbinObj.UserAPI.LoadAllPolicy()
-	CheckAllPolicy()
-}
-
-func CheckAllPolicy() {
-	list := CasbinObj.Enforcer.GetPolicy()
-	for _, vlist := range list {
-		for _, v := range vlist {
-			fmt.Printf("value: %s, ", v)
-		}
-		fmt.Println()
-	}
-	ok, _ := CasbinObj.Enforcer.Enforce("zhangsan@qq.com", "/api/v1/setting/permission", "GET")
-	ok1, _ := CasbinObj.Enforcer.Enforce("zhangsan@qq.com", "/api/v1/setting/competition", "GET")
-	ok2, _ := CasbinObj.Enforcer.Enforce("lisi@qq.com", "/api/v1/setting/competition", "GET")
-	fmt.Println(ok)
-	fmt.Println(ok1)
-	fmt.Println(ok2)
 }

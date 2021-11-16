@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"scut2022-bishe/app/controller"
 	"scut2022-bishe/app/middleware"
 	"scut2022-bishe/app/middleware/log"
@@ -13,12 +14,6 @@ func InitRouter() {
 	r.Use(log.LoggerToFile())
 	// 默认跨域
 	r.Use(middleware.Cors())
-
-	r.GET("/index", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
 
 	r.POST("/register", controller.Register)
 	r.POST("/login", controller.Login)
@@ -32,12 +27,19 @@ func InitRouter() {
 	{
 		// 比赛模块
 		apiV1.POST("/setting/competition", controller.CreateCompetition) // 创建比赛
-	}
+		// 权限管理
+		apiV1.GET("/setting/permission", func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{
+				"msg": "请求权限管理成功",
+			})
+		})
+		// 普通用户的
+		apiV1.GET("/index", func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{
+				"msg": "请求普通用户接口成功",
+			})
+		})
 
-	g1 := r.Group("/test")
-	g1.Use(middleware.JWTAuth())
-	{
-		g1.POST("/testtoken", controller.TestToken)
 	}
 
 	err := r.Run()
