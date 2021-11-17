@@ -39,7 +39,7 @@ CREATE TABLE permission(
 );
 
 INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(1, '所有权限', '*', '*');	# 超级用户
-INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(2, '比赛管理', '/api/v1/setting/competition', '*');
+INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(2, '比赛管理', '/api/v1/setting/competition*', '*');
 INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(3, '普通查看页面', '/api/v1/index', 'GET');
 
 CREATE TABLE user_role(
