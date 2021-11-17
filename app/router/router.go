@@ -28,7 +28,7 @@ func InitRouter() {
 		// 比赛模块
 		apiV1.POST("/setting/competition", controller.CreateCompetition)                // 创建比赛
 		apiV1.PUT("/setting/competition/:competition_id", controller.UpdateCompetition) // 更新比赛
-		//apiV1.GET("/setting/competition", controller.GetCompetition)
+		apiV1.GET("/setting/competition", controller.GetCompanyCompetition)
 		apiV1.GET("/setting/competition/get-list", controller.GetCompetitionList)
 
 		// 权限管理

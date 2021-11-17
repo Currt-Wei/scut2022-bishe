@@ -84,46 +84,11 @@ func UpdateCompetition(c *gin.Context) {
 	return
 }
 
-// GetCompetition 查询比赛
-/*func GetCompetition(c *gin.Context) {
+// GetCompanyCompetition 查询比赛
+func GetCompanyCompetition(c *gin.Context) {
 	// 获取competition_id
-	idStr, ok := c.GetQuery("competition_id")
+	idStr := c.Query("competition_id")
 	id, _ := strconv.Atoi(idStr)
-
-	// 获取公司id（当前登录账户的id）
-	claims := c.MustGet("claims").(*middleware.CustomClaims)
-	user := model.GetUserByEmail(claims.Email)
-	roles := user.Role
-	var role string
-	if roles != nil {
-		role = roles[0].RoleName
-	}
-	companyId := user.Id
-
-	// 该用户是超级管理员，并且没有携带competition_id，查询所有的数据
-	if role == "admin" && !ok {
-
-	}
-	// 没有competition_id这个参数，查找当前用户名下的所有的比赛
-	if !ok {
-		coms, err := competition.GetAllCompetitions()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"status": 500,
-				"msg":    "查询所有比赛出错",
-				"data":   nil,
-			})
-			return
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"status": 200,
-				"msg":    "查询所有比赛成功",
-				"data":   coms,
-			})
-			return
-		}
-
-	}
 
 	// 根据id查找比赛
 	com, err := competition.GetCompetitionById(id)
@@ -143,7 +108,7 @@ func UpdateCompetition(c *gin.Context) {
 		return
 	}
 
-}*/
+}
 
 // GetCompetitionList 获取比赛列表
 func GetCompetitionList(c *gin.Context) {
