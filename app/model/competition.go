@@ -25,3 +25,8 @@ func (c Competition) TableName() string {
 func AddCompetition(competition *Competition) error {
 	return DB.Create(competition).Error
 }
+
+// UpdateCompetition 更新比赛
+func UpdateCompetition(competition *Competition) error {
+	return DB.Updates(competition).Error
+}

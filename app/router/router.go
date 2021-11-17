@@ -26,7 +26,8 @@ func InitRouter() {
 	apiV1 := r.Group("/api/v1")
 	{
 		// 比赛模块
-		apiV1.POST("/setting/competition", controller.CreateCompetition) // 创建比赛
+		apiV1.POST("/setting/competition", controller.CreateCompetition)                // 创建比赛
+		apiV1.PUT("/setting/competition/:competition_id", controller.UpdateCompetition) // 更新比赛
 		// 权限管理
 		apiV1.GET("/setting/permission", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{
