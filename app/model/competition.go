@@ -1,11 +1,7 @@
 package model
 
-import (
-	"gorm.io/gorm"
-)
-
 type Competition struct {
-	gorm.Model
+	Id               int       `gorm:"column:id" json:"id"`
 	Title            string    `gorm:"column:title" json:"title"`
 	Description      string    `gorm:"column:description" json:"description""`
 	Reward           string    `gorm:"reward" json:"reward"`
@@ -29,4 +25,25 @@ func AddCompetition(competition *Competition) error {
 // UpdateCompetition 更新比赛
 func UpdateCompetition(competition *Competition) error {
 	return DB.Updates(competition).Error
+}
+
+// GetCompanyCompetitions 查找比赛管理员能看的比赛
+func GetCompanyCompetitions(id int) (coms []*Competition, err error) {
+	coms = make([]*Competition, 10)
+	err = DB.Where("company_id", id).Find(&coms).Error
+	return
+}
+
+// GetAllCompetitions 查找所有的比赛
+func GetAllCompetitions() (coms []*Competition, err error) {
+	coms = make([]*Competition, 10)
+	err = DB.Find(&coms).Error
+	return
+}
+
+// GetCompetitionById 查找一个比赛
+func GetCompetitionById(id int) ([]*Competition, error) {
+	coms := make([]*Competition, 10)
+	err := DB.Where("id = ?", id).First(&coms).Error
+	return coms, err
 }
