@@ -72,10 +72,7 @@ CREATE TABLE `competition` (
   `work_requirement` varchar(255),
   `signup_deadline` TIMESTAMP NOT NULL,
   `submit_deadline` TIMESTAMP NOT NULL,
-  `company_id` int(11),
-	`created_at` TIMESTAMP,
-	`updated_at` TIMESTAMP,
-	`deleted_at` TIMESTAMP
+  `company_id` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
