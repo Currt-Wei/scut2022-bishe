@@ -27,7 +27,7 @@ func CreateCompetition(c *gin.Context) {
 
 	// 添加上user的id作为company_id
 	claims := c.MustGet("claims").(*middleware.CustomClaims)
-	user := model.GetUserByEmail(claims.Email)
+	user, _ := model.GetUserByEmail(claims.Email)
 	com.CompanyId = user.Id
 
 	err := competition.CreateCompetition(&com)
@@ -150,10 +150,7 @@ func GetCompetitionList(c *gin.Context) {
 	// 能进到这个界面的是管理员
 	// 获取当前的登录用户
 	claim := c.MustGet("claims").(*middleware.CustomClaims)
-	var user = model.User{
-		Email: claim.Email,
-	}
-	err := service.FindUserByEmail(&user)
+	user, err := service.FindUserByEmail(claim.Email)
 
 	// 当前登录用户的角色
 	role := user.Role[0].RoleName

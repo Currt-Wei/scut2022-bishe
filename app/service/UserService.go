@@ -9,7 +9,7 @@ import (
 func AddUser(user *model.User) (err error) {
 
 	var user1 *model.User
-	user1 = model.GetUserByEmail(user.Email)
+	user1, _ = model.GetUserByEmail(user.Email)
 	if user1 != nil {
 		log.Logger().Error("注册失败, 邮箱已注册")
 		return fmt.Errorf("注册失败, 邮箱已注册")
@@ -24,19 +24,9 @@ func AddUser(user *model.User) (err error) {
 	return nil
 }
 
-func FindUserByEmail(user *model.User) error {
+func FindUserByEmail(email string) (*model.User, error) {
 
 	var user1 *model.User
-	user1 = model.GetUserByEmail(user.Email)
-	if user1.Email == "" {
-		log.Logger().Error("登陆失败, 用户邮箱未注册")
-		return fmt.Errorf("登陆失败, 用户邮箱未注册")
-	}
-
-	if user.Password != user1.Password {
-		log.Logger().Error("登陆失败, 密码错误")
-		return fmt.Errorf("登陆失败, 密码错误")
-	}
-
-	return nil
+	user1, err := model.GetUserByEmail(email)
+	return user1, err
 }

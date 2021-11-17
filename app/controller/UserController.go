@@ -69,42 +69,51 @@ func TestToken(c *gin.Context) {
 	return
 }
 
-// 登陆
+// Login 登陆
 func Login(c *gin.Context) {
-	var user model.User
-
-	if err := c.ShouldBind(&user); err != nil {
-		c.JSON(http.StatusOK, gin.H{
+	var u model.User
+	if err := c.ShouldBindJSON(&u); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
 			"status": constant.LoginFail,
-			"msg":    err.Error(),
-			"data":   nil,
+			"msg":    "登录失败",
+			"data":   err.Error(),
 		})
 		return
 	}
 
 	//TODO 查找数据库
-	err := service.FindUserByEmail(&user)
+	user, err := service.FindUserByEmail(u.Email)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": constant.LoginFail,
 			"msg":    err.Error(),
-			"data":   nil,
+			"data":   "登录失败",
 		})
 		return
 	}
 
-	generateToken(c, user)
+	// 密码错误
+	if u.Password != user.Password {
+		c.JSON(http.StatusOK, gin.H{
+			"status": constant.LoginFail,
+			"msg":    "登录失败",
+			"data":   err.Error(),
+		})
+		return
+	}
 
-	//c.JSON(http.StatusOK, gin.H{
-	//	"status": 0,
-	//	"msg":    "登陆成功",
-	//	"data":   nil,
-	//})
+	data := generateToken(c, *user)
+	c.JSON(http.StatusOK, gin.H{
+		"status": constant.LoginSuccess,
+		"msg":    "登陆成功",
+		"data":   data,
+	})
+
 	return
 }
 
 // token生成器
-func generateToken(c *gin.Context, user model.User) {
+func generateToken(c *gin.Context, user model.User) LoginResult {
 	// 构造SignKey: 签名和解签名需要使用一个值
 	j := middleware.NewJWT()
 	// 构造用户claims信息(负荷)
@@ -137,10 +146,5 @@ func generateToken(c *gin.Context, user model.User) {
 		Token: token,
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"status": constant.LoginSuccess,
-		"msg":    "登陆成功",
-		"data":   data,
-	})
-	return
+	return data
 }
