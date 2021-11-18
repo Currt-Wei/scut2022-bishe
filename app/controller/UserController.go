@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"scut2022-bishe/app/middleware"
-	"scut2022-bishe/app/middleware/log"
 	"scut2022-bishe/app/model"
 	"scut2022-bishe/app/service"
 	"scut2022-bishe/constant"
@@ -102,18 +101,28 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	data := generateToken(c, *user)
+	token := generateToken(c, *user)
+	var role string
+	// 用户角色
+	if len(user.Role) == 0 {
+		role = "user"
+	} else {
+		role = user.Role[0].RoleName
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"status": constant.LoginSuccess,
 		"msg":    "登陆成功",
-		"data":   data,
+		"data": gin.H{
+			"token": token,
+			"role":  role,
+		},
 	})
 
 	return
 }
 
 // token生成器
-func generateToken(c *gin.Context, user model.User) LoginResult {
+func generateToken(c *gin.Context, user model.User) string {
 	// 构造SignKey: 签名和解签名需要使用一个值
 	j := middleware.NewJWT()
 	// 构造用户claims信息(负荷)
@@ -123,7 +132,7 @@ func generateToken(c *gin.Context, user model.User) LoginResult {
 		jwt.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000),
 			// 签名生效时间
-			ExpiresAt: int64(time.Now().Unix() + 3600),
+			ExpiresAt: int64(time.Now().Unix() + 36000),
 			// 签名过期时间
 			Issuer: "bgbiao.top",
 			// 签名颁发者
@@ -139,12 +148,5 @@ func generateToken(c *gin.Context, user model.User) LoginResult {
 		})
 	}
 
-	log.Logger().Println(token)
-	// 封装一个响应数据,返回用户名和token
-	data := LoginResult{
-		Name:  user.Name,
-		Token: token,
-	}
-
-	return data
+	return token
 }
