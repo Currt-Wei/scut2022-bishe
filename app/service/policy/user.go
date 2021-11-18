@@ -26,6 +26,9 @@ func (u *User) LoadAllPolicy() {
 	for _, user := range users {
 		u.LoadPolicy(user.Id)
 	}
+
+	// competition_manager同时也是user身份，添加上这个权限
+	u.Enforcer.AddRoleForUser("competition_manager", "user")
 }
 
 // LoadPolicy 根据user_id加载出该用户的角色
@@ -39,6 +42,12 @@ func (u *User) LoadPolicy(id int) {
 	_, err = u.Enforcer.DeleteRolesForUser(user.Email)
 
 	if err != nil {
+		return
+	}
+
+	// 如果当前用户没有角色，则默认是user
+	if len(user.Role) == 0 {
+		u.Enforcer.AddRoleForUser(user.Email, "user")
 		return
 	}
 
