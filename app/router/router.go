@@ -26,10 +26,14 @@ func InitRouter() {
 	apiV1 := r.Group("/api/v1")
 	{
 		// 比赛模块
+		// 管理员接口
 		apiV1.POST("/setting/competition", controller.CreateCompetition)                // 创建比赛
 		apiV1.PUT("/setting/competition/:competition_id", controller.UpdateCompetition) // 更新比赛
 		apiV1.GET("/setting/competition", controller.GetCompanyCompetition)
 		apiV1.GET("/setting/competition/get-list", controller.GetCompetitionList)
+		// 普通用户接口
+		apiV1.GET("/user/competition/get-list", controller.GetCompetitionListByUser)
+		apiV1.GET("/user/competition", controller.GetCompanyCompetition)
 
 		// 权限管理
 		apiV1.GET("/setting/permission", func(ctx *gin.Context) {

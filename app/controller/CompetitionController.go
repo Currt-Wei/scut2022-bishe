@@ -143,3 +143,21 @@ func GetCompetitionList(c *gin.Context) {
 		})
 	}
 }
+
+func GetCompetitionListByUser(c *gin.Context) {
+	coms, err := competition.GetAllCompetitions()
+	// 数据集返回
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": 500,
+			"msg":    "查询失败",
+			"data":   err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"msg":    "查询成功",
+			"data":   coms,
+		})
+	}
+}
