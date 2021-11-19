@@ -35,6 +35,9 @@ func InitRouter() {
 		apiV1.GET("/user/competition/get-list", controller.GetCompetitionListByUser)
 		apiV1.GET("/user/competition", controller.GetCompanyCompetition)
 
+		// 报名模块
+		apiV1.POST("/user/competition/sign-up", controller.Signup)
+
 		// 权限管理
 		apiV1.GET("/setting/permission", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{

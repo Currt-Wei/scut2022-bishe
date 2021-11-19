@@ -41,7 +41,7 @@ CREATE TABLE permission(
 
 INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(1, '所有权限', '*', '*');	# 超级用户
 INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(2, '比赛管理', '/api/v1/setting/competition*', '*');
-INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(3, '普通查看页面', '/api/v1/user/*', 'GET');
+INSERT INTO permission(`id`, `permission_name`, `url`, `method`) VALUES(3, '普通查看页面', '/api/v1/user/*', '*');
 
 CREATE TABLE user_role(
     `id` INT PRIMARY KEY auto_increment,
@@ -90,5 +90,13 @@ VALUES(5, '公司4的测试比赛2', '这是测试比赛2', '100块', '本科生
 INSERT INTO competition(`id`, `title`, `description`, `reward`, `entry_requirement`, `work_requirement`, `signup_deadline`, `submit_deadline`, `company_id`)
 VALUES(6, '公司4的测试比赛3', '这是测试比赛3', '100块', '本科生', '作品要求好多好多', '2021-12-05 12:00:00', '2022-03-01 12:00:00', 4);
 
-
+CREATE TABLE `competition_student`(
+    `id` INT PRIMARY KEY auto_increment,
+    `competition_id` INT ,
+    `student_id` INT,
+    `remark` VARCHAR(255),
+    `status` CHAR(10),
+    `work_link` VARCHAR(255),
+    `score` INT
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
