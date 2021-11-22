@@ -144,6 +144,7 @@ func GetCompetitionList(c *gin.Context) {
 	}
 }
 
+// GetCompetitionListByUser 普通用户获取比赛列表
 func GetCompetitionListByUser(c *gin.Context) {
 	coms, err := competition.GetAllCompetitions()
 	// 数据集返回
@@ -160,4 +161,31 @@ func GetCompetitionListByUser(c *gin.Context) {
 			"data":   coms,
 		})
 	}
+}
+
+// GetSignupStu 获取报名比赛的所有学生
+func GetSignupStu(c *gin.Context) {
+	// 获取比赛id
+	competitionId, _ := strconv.Atoi(c.Query("competition_id"))
+	// 查找到该比赛的所有学生
+	cs := competition.GetCompetitionStudent(competitionId)
+	var stus []*model.ComStuInfo
+	for _, c := range cs {
+		u, _ := model.GetUserById(c.StudentId)
+		stus = append(stus, &model.ComStuInfo{
+			Name:       u.Name,
+			Email:      u.Email,
+			StuNo:      u.StuNo,
+			StuCollege: u.StuCollege,
+			StuGrade:   u.StuGrade,
+			Remark:     c.Remark,
+			WorkLink:   c.WorkLink,
+			Score:      c.Score,
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": 200,
+		"msg":    "查询报名学生成功",
+		"data":   stus,
+	})
 }

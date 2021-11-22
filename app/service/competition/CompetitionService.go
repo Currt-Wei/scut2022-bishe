@@ -22,6 +22,6 @@ func GetAllCompetitions() ([]*model.Competition, error) {
 	return model.GetAllCompetitions()
 }
 
-func GetCompetitionById(id int) ([]*model.Competition, error) {
+func GetCompetitionById(id int) (*model.Competition, error) {
 	return model.GetCompetitionById(id)
 }

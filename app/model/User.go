@@ -5,15 +5,15 @@ import (
 )
 
 type User struct {
-	Id         int    `gorm:"column:id" form:"id"`
-	Name       string `gorm:"column:name" form:"name"`
-	Email      string `gorm:"column:email" form:"email"`
-	Password   string `gorm:"column:password" form:"password"`
-	StuNo      string `gorm:"column:stu_no" form:"stu_no"`
-	StuCollege string `gorm:"column:stu_college" form:"stu_college"`
-	StuGrade   string `gorm:"column:stu_grade" form:"stu_grade"`
+	Id         int    `gorm:"column:id" json:"id"`
+	Name       string `gorm:"column:name" json:"name"`
+	Email      string `gorm:"column:email" json:"email"`
+	Password   string `gorm:"column:password" json:"password"`
+	StuNo      string `gorm:"column:stu_no" json:"stu_no"`
+	StuCollege string `gorm:"column:stu_college" json:"stu_college"`
+	StuGrade   string `gorm:"column:stu_grade" json:"stu_grade"`
 
-	Role []Role `gorm:"many2many:user_role"`
+	Role []Role `gorm:"many2many:user_role" json:"-"`
 }
 
 func (S User) TableName() string {

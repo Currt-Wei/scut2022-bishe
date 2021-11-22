@@ -42,8 +42,8 @@ func GetAllCompetitions() (coms []*Competition, err error) {
 }
 
 // GetCompetitionById 查找一个比赛
-func GetCompetitionById(id int) ([]*Competition, error) {
-	coms := make([]*Competition, 10)
-	err := DB.Where("id = ?", id).First(&coms).Error
-	return coms, err
+func GetCompetitionById(id int) (*Competition, error) {
+	var com Competition
+	err := DB.Preload("Student").First(&com, id).Error
+	return &com, err
 }

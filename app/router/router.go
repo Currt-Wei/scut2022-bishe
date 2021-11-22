@@ -31,6 +31,7 @@ func InitRouter() {
 		apiV1.PUT("/setting/competition/:competition_id", controller.UpdateCompetition) // 更新比赛
 		apiV1.GET("/setting/competition", controller.GetCompanyCompetition)
 		apiV1.GET("/setting/competition/get-list", controller.GetCompetitionList)
+		apiV1.GET("/setting/competition/user", controller.GetSignupStu) // 参加比赛的学生列表
 		// 普通用户接口
 		apiV1.GET("/user/competition/get-list", controller.GetCompetitionListByUser)
 		apiV1.GET("/user/competition", controller.GetCompanyCompetition)
