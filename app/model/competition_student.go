@@ -36,3 +36,10 @@ func GetCompetitionStudent(competitionId int) (cs []*CompetitionStudent) {
 	DB.Where("competition_id", competitionId).Find(&cs)
 	return
 }
+
+// GetStuCompetitionsId 获取学生参与的所有比赛Id
+func GetStuCompetitionsId(stuId int) ([]uint8, error) {
+	competitionIds := make([]uint8, 10)
+	err := DB.Table("competition_student").Where("student_id", stuId).Select("competition_id").Scan(&competitionIds).Error
+	return competitionIds, err
+}

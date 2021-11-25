@@ -35,6 +35,8 @@ func InitRouter() {
 		// 普通用户接口
 		apiV1.GET("/user/competition/get-list", controller.GetCompetitionListByUser)
 		apiV1.GET("/user/competition", controller.GetCompanyCompetition)
+		// 普通用户信息管理
+		apiV1.GET("/user/own/competition", controller.GetStuCompetitions) // 用户参与的比赛
 
 		// 报名模块
 		apiV1.POST("/user/competition/sign-up", controller.Signup)

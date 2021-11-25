@@ -11,3 +11,8 @@ func AddSignUp(cs *model.CompetitionStudent) error {
 func GetCompetitionStudent(competitionId int) (cs []*model.CompetitionStudent) {
 	return model.GetCompetitionStudent(competitionId)
 }
+
+// GetStuCompetitions 获取学生参与的所有比赛
+func GetStuCompetitions(stuId int) ([]uint8, error) {
+	return model.GetStuCompetitionsId(stuId)
+}

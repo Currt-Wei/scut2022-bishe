@@ -36,3 +36,41 @@ func Signup(c *gin.Context) {
 		})
 	}
 }
+
+// GetStuCompetitions 获取学生参与的所有比赛
+func GetStuCompetitions(c *gin.Context) {
+	// 获取该用户的信息
+	claim := c.MustGet("claims").(*middleware.CustomClaims)
+	user, _ := service.FindUserByEmail(claim.Email)
+	// 在中间表中查找到所有的比赛id
+	competitionIds, err := competition.GetStuCompetitions(user.Id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": 400,
+			"msg":    err.Error(),
+			"data":   nil,
+		})
+		return
+	}
+	// 遍历比赛，逐个查出来
+	var coms []*model.Competition
+	for _, id := range competitionIds {
+		com, err := competition.GetCompetitionById(int(id))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"status": 400,
+				"msg":    err.Error(),
+				"data":   nil,
+			})
+			return
+		}
+		// 添加到比赛集合中
+		coms = append(coms, com)
+	}
+	// 将结果返回
+	c.JSON(http.StatusOK, gin.H{
+		"status": 200,
+		"msg":    "查询成功",
+		"data":   coms,
+	})
+}
