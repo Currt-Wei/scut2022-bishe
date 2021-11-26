@@ -16,3 +16,13 @@ func GetCompetitionStudent(competitionId int) (cs []*model.CompetitionStudent) {
 func GetStuCompetitions(stuId int) ([]uint8, error) {
 	return model.GetStuCompetitionsId(stuId)
 }
+
+// GetSignUpInfo 获取报名详情
+func GetSignUpInfo(competitionId int, stuId int) (*model.CompetitionStudent, error) {
+	return model.GetSignUpInfo(competitionId, stuId)
+}
+
+// UpdateSignup 更新报名信息
+func UpdateSignup(cs *model.CompetitionStudent) error {
+	return model.UpdateSignup(cs)
+}

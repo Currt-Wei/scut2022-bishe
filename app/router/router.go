@@ -37,6 +37,7 @@ func InitRouter() {
 		apiV1.GET("/user/competition", controller.GetCompanyCompetition)
 		// 普通用户信息管理
 		apiV1.GET("/user/own/competition", controller.GetStuCompetitions) // 用户参与的比赛
+		apiV1.POST("/user/competition/post-work", controller.PostWork)    // 普通用户提交作品
 
 		// 报名模块
 		apiV1.POST("/user/competition/sign-up", controller.Signup)

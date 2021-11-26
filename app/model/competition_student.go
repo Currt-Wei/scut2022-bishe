@@ -43,3 +43,15 @@ func GetStuCompetitionsId(stuId int) ([]uint8, error) {
 	err := DB.Table("competition_student").Where("student_id", stuId).Select("competition_id").Scan(&competitionIds).Error
 	return competitionIds, err
 }
+
+// GetSignUpInfo 获取报名详情
+func GetSignUpInfo(competitionId int, stuId int) (*CompetitionStudent, error) {
+	var cs CompetitionStudent
+	err := DB.Where("competition_id", competitionId).Where("student_id", stuId).Find(&cs).Error
+	return &cs, err
+}
+
+// UpdateSignup 更新报名信息
+func UpdateSignup(cs *CompetitionStudent) error {
+	return DB.Updates(cs).Error
+}
