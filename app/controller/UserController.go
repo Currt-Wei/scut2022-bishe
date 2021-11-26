@@ -8,6 +8,7 @@ import (
 	"scut2022-bishe/app/model"
 	"scut2022-bishe/app/service"
 	"scut2022-bishe/constant"
+	"scut2022-bishe/util/casbin"
 	"time"
 )
 
@@ -35,6 +36,7 @@ func Register(c *gin.Context) {
 			"msg":    err.Error(),
 			"data":   nil,
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -42,7 +44,10 @@ func Register(c *gin.Context) {
 		"msg":    "注册成功",
 		"data":   nil,
 	})
-	return
+
+	// 给该用户添加普通用户的身份
+	casbin.CasbinObj.Enforcer.AddRoleForUser(user.Email, "user")
+
 }
 
 // 定义一个普通controller函数，作为一个验证接口逻辑
